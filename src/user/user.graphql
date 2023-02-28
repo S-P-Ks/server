@@ -1,0 +1,22 @@
+type User {
+    id:String!,
+    name:String!,
+    accountType:String!,
+    email:String!,
+    bio:String!
+}
+
+type Query{
+    getALLUsers:[User],
+    getUserByID(id: ID):User
+}
+
+type Deleted{
+    deleted:Boolean
+}
+
+type Mutation{
+    createUser(name:String!,accountType:String!,email:String!,bio:String!,password:String!): User,
+    updateUser(id:ID,name:String,accountType:String,email:String,bio:String): User,
+    deleteUser(id:ID):Deleted
+}

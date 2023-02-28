@@ -1,0 +1,22 @@
+type User {
+    id:String!,
+    name:String!,
+    accountType:String!,
+    profilePhoto:String!,
+    email:String!,
+    bio:String!
+}
+
+type LoginInputParameters{
+    email:String,
+    password:String
+}
+
+type AuthResult{
+    access_token: String,
+    user: User
+}
+
+type Mutation{
+    login(email:String!,password:String!): AuthResult
+}

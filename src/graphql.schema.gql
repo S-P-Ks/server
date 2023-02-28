@@ -1,0 +1,50 @@
+
+/*
+ * -------------------------------------------------------
+ * THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+ * -------------------------------------------------------
+ */
+
+/* tslint:disable */
+/* eslint-disable */
+
+export class User {
+    id: string;
+    name: string;
+    accountType: string;
+    profilePhoto: string;
+    email: string;
+    bio: string;
+}
+
+export class LoginInputParameters {
+    email?: Nullable<string>;
+    password?: Nullable<string>;
+}
+
+export class AuthResult {
+    access_token?: Nullable<string>;
+    user?: Nullable<User>;
+}
+
+export abstract class IMutation {
+    abstract login(email: string, password: string): Nullable<AuthResult> | Promise<Nullable<AuthResult>>;
+
+    abstract createUser(name: string, accountType: string, email: string, bio: string, password: string): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract updateUser(id?: Nullable<string>, name?: Nullable<string>, accountType?: Nullable<string>, email?: Nullable<string>, bio?: Nullable<string>): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract deleteUser(id?: Nullable<string>): Nullable<Deleted> | Promise<Nullable<Deleted>>;
+}
+
+export abstract class IQuery {
+    abstract getALLUsers(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
+
+    abstract getUserByID(id?: Nullable<string>): Nullable<User> | Promise<Nullable<User>>;
+}
+
+export class Deleted {
+    deleted?: Nullable<boolean>;
+}
+
+type Nullable<T> = T | null;
