@@ -1,0 +1,20 @@
+type POST {
+    id:ID!,
+    images:[String],
+    caption:String
+}
+
+type Query{
+    getALLPosts:[POST],
+    getPostByID(id: ID):POST
+}
+
+type Deleted{
+    deleted:Boolean
+}
+
+type Mutation{
+    createPost(images:[String],caption:String): POST,
+    updatePost(id:ID,images:[String],caption:String): POST,
+    deletePost(id:ID):Deleted
+}

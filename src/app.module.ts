@@ -15,6 +15,7 @@ import { UserEntity } from './entity/user.entity';
 import { LoggingPlugin } from './apollo.pluging';
 import { PostEntity } from './entity/post.entity';
 import { CommentEntity } from './entity/comments.entity';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -45,9 +46,13 @@ import { CommentEntity } from './entity/comments.entity';
         credentials: true
       },
       driver: ApolloDriver,
-      playground: true,
+      playground: {
+        settings: {
+          "request.credentials": "include"
+        }
+      },
       typePaths: ["./**/*.graphql"],
-      context: ({ req }) => ({ headers: req.headers }),
+      context: ({ req, res }) => ({ headers: req.headers, res }),
       debug: true,
       definitions: {
         path: join(process.cwd(), "src/graphql.schema.gql"),
@@ -56,6 +61,7 @@ import { CommentEntity } from './entity/comments.entity';
     }),
     AuthModule,
     UserModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [

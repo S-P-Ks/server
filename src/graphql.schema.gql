@@ -30,6 +30,12 @@ export class AuthResult {
 export abstract class IMutation {
     abstract login(email: string, password: string): Nullable<AuthResult> | Promise<Nullable<AuthResult>>;
 
+    abstract createPost(images?: Nullable<Nullable<string>[]>, caption?: Nullable<string>): Nullable<POST> | Promise<Nullable<POST>>;
+
+    abstract updatePost(id?: Nullable<string>, images?: Nullable<Nullable<string>[]>, caption?: Nullable<string>): Nullable<POST> | Promise<Nullable<POST>>;
+
+    abstract deletePost(id?: Nullable<string>): Nullable<Deleted> | Promise<Nullable<Deleted>>;
+
     abstract createUser(name: string, accountType: string, email: string, bio: string, password: string): Nullable<User> | Promise<Nullable<User>>;
 
     abstract updateUser(id?: Nullable<string>, name?: Nullable<string>, accountType?: Nullable<string>, email?: Nullable<string>, bio?: Nullable<string>): Nullable<User> | Promise<Nullable<User>>;
@@ -37,7 +43,17 @@ export abstract class IMutation {
     abstract deleteUser(id?: Nullable<string>): Nullable<Deleted> | Promise<Nullable<Deleted>>;
 }
 
+export class POST {
+    id: string;
+    images?: Nullable<Nullable<string>[]>;
+    caption?: Nullable<string>;
+}
+
 export abstract class IQuery {
+    abstract getALLPosts(): Nullable<Nullable<POST>[]> | Promise<Nullable<Nullable<POST>[]>>;
+
+    abstract getPostByID(id?: Nullable<string>): Nullable<POST> | Promise<Nullable<POST>>;
+
     abstract getALLUsers(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
 
     abstract getUserByID(id?: Nullable<string>): Nullable<User> | Promise<Nullable<User>>;

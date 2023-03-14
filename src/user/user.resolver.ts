@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { JwtService } from '@nestjs/jwt';
 import { AuthService } from 'src/auth/auth.service';
 import { JWTStrategyGuard } from 'src/auth/guards/jwtGuard';
 import { UserEntity } from 'src/entity/user.entity';
@@ -8,7 +9,7 @@ import { UserService } from './user.service';
 
 @Resolver("User")
 export class UserResolver {
-    constructor(private readonly userService: UserService, private readonly authService: AuthService) { }
+    constructor(private readonly userService: UserService, private readonly authService: AuthService, private readonly jwtService: JwtService) { }
 
     @UseGuards(JWTStrategyGuard)
     @Query()
@@ -23,9 +24,12 @@ export class UserResolver {
     }
 
     @Mutation()
-    async createUser(@Args("name") name: string, @Args("password") password: string, @Args("email") email: string, @Args("accountType") accountType: string, @Args("bio") bio: string): Promise<UserEntity> {
+    async createUser(@Args("name") name: string, @Args("password") password: string, @Args("email") email: string, @Args("accountType") accountType: string, @Args("bio") bio: string, @Context("res") res): Promise<UserEntity> {
         const hashPass = await this.authService.generateHashPass(password);
-        return this.userService.createUser({ name: name, email: email, accountType: accountType, bio: bio, hashPassword: hashPass });
+        var user = await this.userService.createUser({ name: name, email: email, accountType: accountType, bio: bio, hashPassword: hashPass });
+        const token = await this.jwtService.sign({ id: user.id, name: user.name, email: user.email, bio: user.bio, profilePhoto: user.profilePhoto, });
+        res.cookie("cookieToken", token);
+        return user;
     }
 
     @UseGuards(JWTStrategyGuard)

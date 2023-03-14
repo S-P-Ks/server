@@ -30,7 +30,9 @@ export class UserService {
 
     createUser(createUserInput: createUserParameter) {
         const user = this.userRepository.create({ name: createUserInput.name, email: createUserInput.email, bio: createUserInput.bio, accountType: createUserInput.accountType, hashPassword: createUserInput.hashPassword })
-        return this.userRepository.save(user)
+        const u = this.userRepository.save(user);
+
+        return u;
     }
 
     async updateUser(updateUserInput: updateUser): Promise<UserEntity> {

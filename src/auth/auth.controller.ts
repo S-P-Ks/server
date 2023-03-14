@@ -1,5 +1,4 @@
 import { Controller, Post, UseGuards } from '@nestjs/common';
-import { Req, Res } from '@nestjs/common/decorators';
 import { Args, Context, Mutation, Query, Resolver, } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
@@ -11,12 +10,12 @@ export class AuthResolver {
 
     @UseGuards(LocalStrategyGuard)
     @Mutation()
-    async login(@Args("email") email: string, @Args("password") password: string, @Context() ctx) {
+    async login(@Args("email") email: string, @Args("password") password: string, @Context() ctx, @Context("res") res) {
         const user = ctx.user;
-        console.log(user)
+        const token = this.jwtService.sign(user, { expiresIn: "1day" });
+        res.cookie("cookieToken", token);
         return {
-            access_token: this.jwtService.sign(user, { expiresIn: 3600 }),
             user
-        }
+        };
     }
 }
